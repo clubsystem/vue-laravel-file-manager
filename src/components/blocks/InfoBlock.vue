@@ -1,6 +1,6 @@
 <template>
-    <div class="justify-content-between fm-info-block">
-        <div class="col-auto">
+    <div class="row fm-info-block">
+        <div class="col-xs-6">
             <span v-show="selectedCount">
                 {{ `${lang.info.selected} ${selectedCount}` }}
                 {{ `${lang.info.selectedSize} ${selectedFilesSize}` }}
@@ -11,7 +11,7 @@
                 {{ `${lang.info.size} ${filesSize}`}}
             </span>
         </div>
-        <div class="col-4">
+        <div class="col-xs-4">
             <!-- Progress Bar -->
             <div class="progress" v-show="progressBar">
                 <div class="progress-bar progress-bar-striped bg-info" role="progressbar"
@@ -23,7 +23,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-auto text-right">
+        <div class="col-xs-2 text-right">
             <span v-show="loadingSpinner">
                 <i class="fas fa-spinner fa-pulse"></i>
             </span>

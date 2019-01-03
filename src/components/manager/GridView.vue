@@ -1,5 +1,5 @@
 <template>
-    <div class="fm-grid">
+    <div class="fm-grid clearfix">
         <div class="d-flex align-content-start flex-wrap">
             <div v-if="!isRootPath" v-on:click="levelUp" class="fm-grid-item text-center" >
                 <div class="fm-item-icon">
