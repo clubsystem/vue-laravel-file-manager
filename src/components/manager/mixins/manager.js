@@ -84,9 +84,8 @@ export default {
     selectItem(type, path, event) {
       // search in selected array
       const alreadySelected = this.selected[type].includes(path);
-
       // if pressed Ctrl -> multi select
-      if (event.ctrlKey) {
+      if (event.ctrlKey || event.metaKey) {
         if (!alreadySelected) {
           // add new selected item
           this.$store.commit(`fm/${this.manager}/setSelected`, { type, path });
@@ -97,7 +96,9 @@ export default {
       }
 
       // single select
-      if (!event.ctrlKey && !alreadySelected) this.$store.commit(`fm/${this.manager}/changeSelected`, { type, path });
+      if (!(event.ctrlKey || event.metaKey) && !alreadySelected) {
+        this.$store.commit(`fm/${this.manager}/changeSelected`, { type, path });
+      }
     },
 
     /**
