@@ -42,6 +42,21 @@ export default {
     selected() {
       return this.$store.state.fm[this.manager].selected;
     },
+
+    /**
+     * ACL On/Off
+     */
+    acl() {
+      return this.$store.state.fm.settings.acl;
+    },
+
+    /**
+     * Check if current path is at root level
+     * @return {boolean}
+     */
+    isRootPath() {
+      return this.$store.state.fm[this.manager].selectedDirectory === null;
+    },
   },
   methods: {
     /**
@@ -123,6 +138,63 @@ export default {
 
       // create event
       EventBus.$emit('contextMenu', event);
+    },
+
+    /**
+     * Select and Action
+     * @param path
+     * @param extension
+     */
+    selectAction(path, extension) {
+      // if is set fileCallback
+      if (this.$store.state.fm.fileCallback) {
+        this.$store.dispatch('fm/url', {
+          disk: this.selectedDisk,
+          path,
+        }).then((response) => {
+          if (response.data.result.status === 'success') {
+            this.$store.state.fm.fileCallback(response.data.url);
+          }
+        });
+
+        return;
+      }
+
+      // if extension not defined
+      if (!extension) {
+        return;
+      }
+
+      // show, play..
+      if (this.$store.state.fm.settings.imageExtensions
+        .includes(extension.toLowerCase())) {
+        // show image
+        this.$store.commit('fm/modal/setModalState', {
+          modalName: 'Preview',
+          show: true,
+        });
+      } else if (Object.keys(this.$store.state.fm.settings.textExtensions)
+        .includes(extension.toLowerCase())) {
+        // show text file
+        this.$store.commit('fm/modal/setModalState', {
+          modalName: 'TextEdit',
+          show: true,
+        });
+      } else if (this.$store.state.fm.settings.audioExtensions
+        .includes(extension.toLowerCase())) {
+        // show player modal
+        this.$store.commit('fm/modal/setModalState', {
+          modalName: 'AudioPlayer',
+          show: true,
+        });
+      } else if (this.$store.state.fm.settings.videoExtensions
+        .includes(extension.toLowerCase())) {
+        // show player modal
+        this.$store.commit('fm/modal/setModalState', {
+          modalName: 'VideoPlayer',
+          show: true,
+        });
+      }
     },
   },
 };

@@ -97,6 +97,11 @@ const ru = {
       size: 'Размер',
       title: 'Свойства',
       type: 'Тип',
+      url: 'URL',
+      access: 'Доступ',
+      access_0: 'Нет доступа',
+      access_1: 'Только чтение',
+      access_2: 'Чтение и Запись',
     },
     rename: {
       directoryExist: 'Папка существует',
@@ -147,6 +152,37 @@ const ru = {
       reset: 'Сбросить',
       save: 'Сохранить',
     },
+  },
+  notifications: {
+    cutToClipboard: 'Вырезано!',
+    copyToClipboard: 'Скопировано!',
+  },
+  response: {
+    noConfig: 'Конфигурация не найдена!',
+    notFound: 'Не найдено!',
+    diskNotFound: 'Диск не найден!',
+    pathNotFound: 'Путь не существует!',
+    diskSelected: 'Диск выбран!',
+    // files
+    fileExist: 'Файл существует!',
+    fileCreated: 'Файл создан!',
+    fileUpdated: 'Файл обновлен!',
+    fileNotFound: 'Файл не найден!',
+    // directories
+    dirExist: 'Директория существует!',
+    dirCreated: 'Директория создана!',
+    dirNotFound: 'Директория не найдена',
+    // actions
+    uploaded: 'Все файлы загружены!',
+    notAllUploaded: 'Не все файлы загружены!',
+    delNotFound: 'Не все элементы найдены!',
+    deleted: 'Удалено!',
+    renamed: 'Переименовано!',
+    copied: 'Скопировано!',
+    // zip
+    zipError: 'Ошибка создания архива!',
+    // acl
+    aclError: 'В доступе отказано!',
   },
 };
 

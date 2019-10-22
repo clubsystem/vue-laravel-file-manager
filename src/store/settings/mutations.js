@@ -30,15 +30,16 @@ export default {
   },
 
   /**
-   * Initiate base url
+   * Initiate Axios baseUrl and headers
    * @param state
    */
-  initBaseUrl(state) {
+  initAxiosSettings(state) {
+    // initiate base url, if not set manually
     if (!state.baseUrl) {
-      if (process.env.NODE_ENV === 'development' && process.env.VUE_APP_AXIOS_BASE_URL) {
+      if (process.env.VUE_APP_LFM_AXIOS_BASE_URL) {
         // vue .env
-        state.baseUrl = process.env.VUE_APP_AXIOS_BASE_URL;
-      } else if (process.env.NODE_ENV === 'development' && process.env.MIX_LFM_BASE_URL) {
+        state.baseUrl = process.env.VUE_APP_LFM_AXIOS_BASE_URL;
+      } else if (process.env.MIX_LFM_BASE_URL) {
         // laravel .env
         state.baseUrl = process.env.MIX_LFM_BASE_URL;
       } else {
@@ -53,6 +54,32 @@ export default {
         state.baseUrl = baseUrl;
       }
     }
+
+    // initiate headers, if not set manually
+    if (Object.keys(state.headers).length === 0) {
+      // off laravel csrf-token if need
+      if (process.env.VUE_APP_LFM_CSRF_TOKEN === 'OFF' ||
+          process.env.MIX_LFM_CSRF_TOKEN === 'OFF'
+      ) {
+        state.headers = { 'X-Requested-With': 'XMLHttpRequest' };
+      } else {
+        // Laravel CSRF token
+        const token = document.head.querySelector('meta[name="csrf-token"]');
+
+        if (!token) {
+          state.headers = {
+            'X-Requested-With': 'XMLHttpRequest',
+          };
+          // eslint-disable-next-line
+          console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+        } else {
+          state.headers = {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-TOKEN': token.content,
+          };
+        }
+      }
+    }
   },
 
   /**
@@ -63,5 +90,6 @@ export default {
   initSettings(state, data) {
     if (!state.lang) state.lang = data.lang;
     if (!state.windowsConfig) state.windowsConfig = data.windowsConfig;
+    state.acl = data.acl;
   },
 };

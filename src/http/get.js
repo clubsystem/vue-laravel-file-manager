@@ -1,4 +1,4 @@
-import HTTP from './init-axios';
+import HTTP from './axios';
 
 export default {
   /**
@@ -66,5 +66,44 @@ export default {
    */
   getFile(disk, path) {
     return HTTP.get('download', { params: { disk, path } });
+  },
+
+  /**
+   * Image thumbnail
+   * @param disk
+   * @param path
+   * @returns {*}
+   */
+  thumbnail(disk, path) {
+    return HTTP.get('thumbnails', {
+      responseType: 'arraybuffer',
+      params: { disk, path },
+    });
+  },
+
+  /**
+   * Image preview
+   * @param disk
+   * @param path
+   * @return {*}
+   */
+  preview(disk, path) {
+    return HTTP.get('preview', {
+      responseType: 'arraybuffer',
+      params: { disk, path },
+    });
+  },
+
+  /**
+   * Download file
+   * @param disk
+   * @param path
+   * @return {*}
+   */
+  download(disk, path) {
+    return HTTP.get('download', {
+      responseType: 'arraybuffer',
+      params: { disk, path },
+    });
   },
 };
