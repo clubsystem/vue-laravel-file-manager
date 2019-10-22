@@ -97,6 +97,11 @@ const ar = {
       size: 'حجم',
       title: 'خصائص',
       type: 'نوع',
+      url: 'رابط',
+      access: 'التمكن من',
+      access_0: 'تم الرفض',
+      access_1: 'قراءة فقط',
+      access_2: 'اقرا و اكتب',
     },
     rename: {
       directoryExist: 'المجلد موجود',
@@ -147,6 +152,37 @@ const ar = {
       reset: 'اعادة تعين',
       save: 'حفظ',
     },
+  },
+  notifications: {
+    cutToClipboard: 'قص إلى الحافظة!',
+    copyToClipboard: 'نسخ إلى الحافظة!',
+  },
+  response: {
+    noConfig: 'الاعدادت غير متوفرة!',
+    notFound: 'غير متوفر!',
+    diskNotFound: 'القرص غير موجود!',
+    pathNotFound: 'مسار غير موجود!',
+    diskSelected: 'تم اختيار القرص!',
+    // files
+    fileExist: 'الملف موجود بالفعل!',
+    fileCreated: 'تم إنشاء الملف!',
+    fileUpdated: 'تم تحديث الملف!',
+    fileNotFound: 'الملف غير موجود!',
+    // directories
+    dirExist: 'المجلد موجود بالفعل!',
+    dirCreated: 'تم أنشاء المجلد!',
+    dirNotFound: 'المجلد غير موجود',
+    // actions
+    uploaded: 'تم تحديث كل الملفات!',
+    notAllUploaded: 'بعض الملفات غير المحملة!',
+    delNotFound: 'بعض الملفات غير موجودة! تحديث!',
+    deleted: 'تم الحذف!',
+    renamed: 'أعيدت تسميتها!',
+    copied: 'تم النسخ بنجاح!',
+    // zip
+    zipError: 'خطأ في إنشاء الأرشيف!',
+    // acl
+    aclError: 'تم الرفض!',
   },
 };
 

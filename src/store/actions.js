@@ -13,45 +13,80 @@ export default {
   initializeApp({ state, commit, getters, dispatch }) {
     GET.initialize().then((response) => {
       if (response.data.result.status === 'success') {
-        // set app settings
         commit('settings/initSettings', response.data.config);
-
-        // set disks
         commit('setDisks', response.data.config.disks);
 
-        const leftDisk = response.data.config.leftDisk
+        let leftDisk = response.data.config.leftDisk
           ? response.data.config.leftDisk
           : getters.diskList[0];
 
-        const rightDisk = response.data.config.rightDisk
+        let rightDisk = response.data.config.rightDisk
           ? response.data.config.rightDisk
           : getters.diskList[0];
 
-        // left manager - set default disk
+        // paths
+        let leftPath = response.data.config.leftPath;
+        let rightPath = response.data.config.rightPath;
+
+        // find disk and path settings in the URL
+        if (window.location.search) {
+          const params = new URLSearchParams(window.location.search);
+
+          if (params.get('leftDisk')) {
+            leftDisk = params.get('leftDisk');
+          }
+
+          if (params.get('rightDisk')) {
+            rightDisk = params.get('rightDisk');
+          }
+
+          if (params.get('leftPath')) {
+            leftPath = params.get('leftPath');
+          }
+
+          if (params.get('rightPath')) {
+            rightPath = params.get('rightPath');
+          }
+        }
+
         commit('left/setDisk', leftDisk);
 
-        // load content to the left file manager
+        // if leftPath not null
+        if (leftPath) {
+          commit('left/setSelectedDirectory', leftPath);
+          commit('left/addToHistory', leftPath);
+        }
+
         dispatch('getLoadContent', {
           manager: 'left',
           disk: leftDisk,
-          path: null,
+          path: leftPath,
         });
 
-        // initialize the app depending on the settings
+        // if selected left and right managers
         if (state.settings.windowsConfig === 3) {
-          // if selected left and right managers
           commit('right/setDisk', rightDisk);
 
-          // load content to the right file manager
+          // if rightPath not null
+          if (rightPath) {
+            commit('right/setSelectedDirectory', rightPath);
+            commit('right/addToHistory', rightPath);
+          }
+
           dispatch('getLoadContent', {
             manager: 'right',
             disk: rightDisk,
-            path: null,
+            path: rightPath,
           });
         } else if (state.settings.windowsConfig === 2) {
           // if selected left manager and directories tree
           // init directories tree
-          dispatch('tree/initTree', leftDisk);
+          dispatch('tree/initTree', leftDisk).then(() => {
+            if (leftPath) {
+              // reopen folders if path not null
+              dispatch('tree/reopenPath', leftPath);
+            }
+          });
         }
       }
     });
@@ -322,18 +357,14 @@ export default {
   },
 
   /**
-   * TODO
    * Get file url
-   * @param state
+   * @param store
    * @param disk
    * @param path
+   * @returns {Promise}
    */
-  url({ state }, { disk, path }) {
-    GET.url(disk, path).then((response) => {
-      if (response.data.result.status === 'success') {
-        state.fileCallback(response.data.url);
-      }
-    });
+  url(store, { disk, path }) {
+    return GET.url(disk, path);
   },
 
   /**
@@ -508,5 +539,45 @@ export default {
         dispatch('repeatSort', getters.inactiveManager);
       }
     }
+  },
+
+  /**
+   * Reset application state
+   * @param state
+   * @param commit
+   */
+  resetState({ state, commit }) {
+    // left manager
+    commit('left/setDisk', null);
+    commit('left/setSelectedDirectory', null);
+    commit('left/setDirectoryContent', { directories: [], files: [] });
+    commit('left/resetSelected');
+    commit('left/resetSortSettings');
+    commit('left/resetHistory');
+    commit('left/setView', 'table');
+    // modals
+    commit('modal/clearModal');
+    // messages
+    commit('messages/clearActionResult');
+    commit('messages/clearProgress');
+    commit('messages/clearLoading');
+    commit('messages/clearErrors');
+
+    if (state.settings.windowsConfig === 3) {
+      // right manager
+      commit('right/setDisk', null);
+      commit('right/setSelectedDirectory', null);
+      commit('right/setDirectoryContent', { directories: [], files: [] });
+      commit('right/resetSelected');
+      commit('right/resetSortSettings');
+      commit('right/resetHistory');
+      commit('right/setView', 'table');
+    } else if (state.settings.windowsConfig === 2) {
+      // tree
+      commit('tree/cleanTree');
+      commit('tree/clearTempArray');
+    }
+
+    commit('resetState');
   },
 };

@@ -11,15 +11,17 @@
         </div>
         <div class="modal-body text-center">
             <template v-if="showCropperModule">
-                <cropper-module v-bind:imgUrl="imgUrl"
+                <cropper-module v-bind:imgSrc="imgSrc"
                                 v-bind:maxHeight="maxHeight"
-                                v-on:closeCropper="showCropperModule = false"></cropper-module>
+                                v-on:closeCropper="closeCropper"></cropper-module>
             </template>
-            <template v-else>
-                <img v-bind:src="imgUrl"
+            <transition v-else name="fade" mode="out-in">
+                <i v-if="!imgSrc" class="fas fa-spinner fa-spin fa-5x p-5 text-muted"></i>
+                <img v-else
+                     v-bind:src="imgSrc"
                      v-bind:alt="selectedItem.basename"
                      v-bind:style="{'max-height': maxHeight+'px'}">
-            </template>
+            </transition>
         </div>
         <div v-if="showFooter" class="d-flex justify-content-between">
             <span class="d-block">
@@ -40,6 +42,7 @@ import CropperModule from './../additions/Cropper.vue';
 import modal from './../mixins/modal';
 import translate from './../../../mixins/translate';
 import helper from './../../../mixins/helper';
+import GET from './../../../http/get';
 
 export default {
   name: 'Preview',
@@ -48,14 +51,21 @@ export default {
   data() {
     return {
       showCropperModule: false,
-      imgUrl: '',
+      imgSrc: '',
     };
   },
   created() {
-    // Create image URL
-    this.imgUrl = `${this.$store.getters['fm/settings/baseUrl']}preview?disk=${this.selectedDisk}&path=${encodeURIComponent(this.selectedItem.path)}`;
+    this.loadImage();
   },
   computed: {
+    /**
+     * Authorization required
+     * @return {*}
+     */
+    auth() {
+      return this.$store.getters['fm/settings/authHeader'];
+    },
+
     /**
      * Selected disk
      * @returns {*}
@@ -72,6 +82,10 @@ export default {
       return this.$store.getters['fm/selectedItems'][0];
     },
 
+    /**
+     * Show modal footer
+     * @return boolean
+     */
     showFooter() {
       return this.canCrop(this.selectedItem.extension) && !this.showCropperModule;
     },
@@ -96,6 +110,34 @@ export default {
      */
     canCrop(extension) {
       return this.$store.state.fm.settings.cropExtensions.includes(extension.toLowerCase());
+    },
+
+    /**
+     * Close cropper
+     */
+    closeCropper() {
+      this.showCropperModule = false;
+      this.loadImage();
+    },
+
+    /**
+     * Load image
+     */
+    loadImage() {
+      // if authorization required
+      if (this.auth) {
+        GET.preview(
+          this.selectedDisk,
+          this.selectedItem.path,
+        ).then((response) => {
+          const mimeType = response.headers['content-type'].toLowerCase();
+          const imgBase64 = Buffer.from(response.data, 'binary').toString('base64');
+
+          this.imgSrc = `data:${mimeType};base64,${imgBase64}`;
+        });
+      } else {
+        this.imgSrc = `${this.$store.getters['fm/settings/baseUrl']}preview?disk=${this.selectedDisk}&path=${encodeURIComponent(this.selectedItem.path)}&v=${this.selectedItem.timestamp}`;
+      }
     },
   },
 };

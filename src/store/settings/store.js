@@ -5,18 +5,28 @@ import getters from './getters';
 import ru from './../../lang/ru';
 import en from '../../lang/en';
 import ar from './../../lang/ar';
+import sr from './../../lang/sr';
+import cs from './../../lang/cs';
+import de from './../../lang/de';
+import es from './../../lang/es';
+import nl from './../../lang/nl';
+/* eslint camelcase: 0 */
+import zh_CN from './../../lang/zh_CN';
 
 export default {
   namespaced: true,
   state() {
     return {
-      // App version
-      version: '2.0.5',
+      // ACL
+      acl: null,
 
-      // this headers will be merged with default headers
+      // App version
+      version: '2.4.6',
+
+      // axios headers
       headers: {},
 
-      // overwrite default URL
+      // axios default URL
       baseUrl: null,
 
       /**
@@ -35,6 +45,12 @@ export default {
         ru: Object.freeze(ru),
         en: Object.freeze(en),
         ar: Object.freeze(ar),
+        sr: Object.freeze(sr),
+        cs: Object.freeze(cs),
+        de: Object.freeze(de),
+        es: Object.freeze(es),
+        nl: Object.freeze(nl),
+        zh_CN: Object.freeze(zh_CN),
       },
 
       // Context menu items
