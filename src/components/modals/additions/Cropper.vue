@@ -122,7 +122,7 @@
                 </button>
             </div>
             <span class="d-block">
-                <button v-on:click="$emit('closeCropper')" class="btn btn-default">{{ lang.btn.back }}</button>
+                <button v-on:click="$emit('closeCropper')" class="btn btn-light">{{ lang.btn.back }}</button>
             </span>
         </div>
     </div>
@@ -244,23 +244,28 @@ export default {
      * Save cropped image
      */
     cropSave() {
-      this.cropper.getCroppedCanvas().toBlob((blob) => {
-        const formData = new FormData();
-        // add disk name
-        formData.append('disk', this.$store.getters['fm/selectedDisk']);
-        // add path
-        formData.append('path', this.selectedItem.dirname);
-        // new image
-        formData.append('file', blob, this.selectedItem.basename);
+      this.cropper.getCroppedCanvas().toBlob(
+        (blob) => {
+          const formData = new FormData();
+          // add disk name
+          formData.append('disk', this.$store.getters['fm/selectedDisk']);
+          // add path
+          formData.append('path', this.selectedItem.dirname);
+          // new image
+          formData.append('file', blob, this.selectedItem.basename);
 
-        this.$store.dispatch('fm/updateFile', formData).then((response) => {
+          this.$store.dispatch('fm/updateFile', formData).then((response) => {
           // if file updated successfully
-          if (response.data.result.status === 'success') {
+            if (response.data.result.status === 'success') {
             // close cropper
-            this.$emit('closeCropper');
-          }
-        });
-      });
+              this.$emit('closeCropper');
+            }
+          });
+        },
+        this.selectedItem.extension !== 'jpg'
+          ? `image/${this.selectedItem.extension}`
+          : 'image/jpeg',
+      );
     },
   },
 };

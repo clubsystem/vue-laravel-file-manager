@@ -12,6 +12,11 @@ import es from './../../lang/es';
 import nl from './../../lang/nl';
 /* eslint camelcase: 0 */
 import zh_CN from './../../lang/zh_CN';
+import fa from './../../lang/fa';
+import it from './../../lang/it';
+import tr from './../../lang/tr';
+import fr from './../../lang/fr';
+import pt_BR from './../../lang/pt_BR';
 
 export default {
   namespaced: true,
@@ -21,7 +26,7 @@ export default {
       acl: null,
 
       // App version
-      version: '2.4.6',
+      version: '2.4.14',
 
       // axios headers
       headers: {},
@@ -50,8 +55,16 @@ export default {
         de: Object.freeze(de),
         es: Object.freeze(es),
         nl: Object.freeze(nl),
-        zh_CN: Object.freeze(zh_CN),
+        'zh-CN': Object.freeze(zh_CN),
+        fa: Object.freeze(fa),
+        it: Object.freeze(it),
+        tr: Object.freeze(tr),
+        fr: Object.freeze(fr),
+        'pt-BR': Object.freeze(pt_BR),
       },
+
+      // show or hide hidden files
+      hiddenFiles: false,
 
       // Context menu items
       contextMenu: [
@@ -151,6 +164,7 @@ export default {
         htaccess: 'text/plain',
         env: 'text/plain',
         txt: 'text/plain',
+        log: 'text/plain',
         ini: 'text/x-ini',
         xml: 'application/xml',
         md: 'text/x-markdown',
@@ -171,6 +185,7 @@ export default {
         rb: 'text/x-ruby',
         go: 'text/x-go',
         yaml: 'text/x-yaml',
+        json: 'application/json',
       },
     };
   },

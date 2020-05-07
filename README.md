@@ -29,7 +29,7 @@ import store from './path-to-your-store/store'   // your Vuex store
 Vue.use(FileManager, {store})
 ```
 
-**ELSE** you need create new vuex instance
+**ELSE** you need to create a new vuex instance
 
 ```
 import Vue from 'vue';
@@ -143,3 +143,7 @@ MIX_LFM_CSRF_TOKEN=OFF
 ```
 
 Warning! Package use axios (Promise) - use babel-polyfill for ie11
+
+## Contributors
+
+[![](https://sourcerer.io/fame/alexusmai/alexusmai/vue-laravel-file-manager/images/0)](https://sourcerer.io/fame/alexusmai/alexusmai/vue-laravel-file-manager/links/0)[![](https://sourcerer.io/fame/alexusmai/alexusmai/vue-laravel-file-manager/images/1)](https://sourcerer.io/fame/alexusmai/alexusmai/vue-laravel-file-manager/links/1)[![](https://sourcerer.io/fame/alexusmai/alexusmai/vue-laravel-file-manager/images/2)](https://sourcerer.io/fame/alexusmai/alexusmai/vue-laravel-file-manager/links/2)[![](https://sourcerer.io/fame/alexusmai/alexusmai/vue-laravel-file-manager/images/3)](https://sourcerer.io/fame/alexusmai/alexusmai/vue-laravel-file-manager/links/3)[![](https://sourcerer.io/fame/alexusmai/alexusmai/vue-laravel-file-manager/images/4)](https://sourcerer.io/fame/alexusmai/alexusmai/vue-laravel-file-manager/links/4)[![](https://sourcerer.io/fame/alexusmai/alexusmai/vue-laravel-file-manager/images/5)](https://sourcerer.io/fame/alexusmai/alexusmai/vue-laravel-file-manager/links/5)[![](https://sourcerer.io/fame/alexusmai/alexusmai/vue-laravel-file-manager/images/6)](https://sourcerer.io/fame/alexusmai/alexusmai/vue-laravel-file-manager/links/6)[![](https://sourcerer.io/fame/alexusmai/alexusmai/vue-laravel-file-manager/images/7)](https://sourcerer.io/fame/alexusmai/alexusmai/vue-laravel-file-manager/links/7)
